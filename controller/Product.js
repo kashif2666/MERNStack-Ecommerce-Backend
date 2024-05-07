@@ -19,8 +19,12 @@ exports.fetchAllProducts = async (req, res) => {
   // sort={_sort:"-price"}
   // pagination= {_page:1, _per_page:10}
   // TODO: we have to try with multiple category and brands after change in front-end
-  let query = Product.find({ deleted: { $ne: true } });
-  let totalProductsQuery = Product.find({ deleted: { $ne: true } });
+  let condition = {};
+  if (!req.query.admin) {
+    condition.deleted = { $ne: true };
+  }
+  let query = Product.find(condition);
+  let totalProductsQuery = Product.find(condition);
 
   if (req.query.category) {
     query = query.find({ category: req.query.category });
