@@ -2,6 +2,7 @@ const { User } = require("../model/User");
 
 exports.fetchUserById = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   try {
     const user = await User.findById(id);
     res.status(200).json(user);
@@ -11,6 +12,7 @@ exports.fetchUserById = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
+  // whole code remove
   // this product we have to get from API body
   const user = new User(req.body);
 
