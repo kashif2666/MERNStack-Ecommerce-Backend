@@ -36,6 +36,7 @@ exports.fetchAllProducts = async (req, res) => {
     });
   }
 
+  // TODO: How to get sort on discountedPrice not on Actual price
   if (req.query._sort) {
     query = query.sort(req.query._sort);
   }
