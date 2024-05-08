@@ -1,18 +1,22 @@
 const { User } = require("../model/User");
 
 exports.fetchUserById = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
   console.log(id);
   try {
     const user = await User.findById(id);
-    res.status(200).json(user);
+    res.status(200).json({
+      id: user.id,
+      addresses: user.addresses,
+      email: user.email,
+      role: user.role,
+    });
   } catch (err) {
     res.status(400).json(err);
   }
 };
 
 exports.createUser = async (req, res) => {
-  // whole code remove
   // this product we have to get from API body
   const user = new User(req.body);
 
