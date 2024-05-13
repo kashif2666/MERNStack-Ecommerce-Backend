@@ -1,15 +1,15 @@
-import { Category } from "../model/category";
+const { Category } = require("../model/category");
 
-export async function fetchCategories(req, res) {
+exports.fetchCategories = async (req, res) => {
   try {
     const categories = await Category.find({}).exec();
     res.status(200).json(categories);
   } catch (err) {
     res.status(400).json(err);
   }
-}
+};
 
-export async function createCategory(req, res) {
+exports.createCategory = async (req, res) => {
   // this product we have to get from API body
   const category = new Category(req.body);
 
@@ -19,4 +19,4 @@ export async function createCategory(req, res) {
   } catch (err) {
     res.status(400).json(err);
   }
-}
+};
