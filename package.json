@@ -13,6 +13,8 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.4.0",
+    "connect-sqlite": "^0.0.1",
+    "connect-sqlite3": "^0.9.15",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
