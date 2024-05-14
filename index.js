@@ -24,6 +24,13 @@ const { User } = require("./model/User");
 const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const path = require("path");
 const { Order } = require("./model/Order");
+const { env } = require("process");
+
+console.log(process.env);
+
+// Email Nodemailer
+
+// async..await is not allowed in global scope, must use a wrapper
 
 // webhook
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
@@ -101,6 +108,8 @@ server.use("/users", isAuth(), usersRouter.router);
 server.use("/auth", authRouter.router);
 server.use("/cart", isAuth(), cartRouter.router);
 server.use("/orders", isAuth(), ordersRouter.router);
+
+//Mail endpoint
 
 //passport strategies
 passport.use(
