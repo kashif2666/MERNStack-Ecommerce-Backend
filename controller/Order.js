@@ -1,4 +1,5 @@
 const { Order } = require("../model/Order");
+const { Product } = require("../model/Product");
 const { User } = require("../model/User");
 const { sendMail, invoiceTemplate } = require("../services/common");
 
@@ -13,8 +14,15 @@ exports.fetchOrderByUser = async (req, res) => {
 };
 
 exports.createOrder = async (req, res) => {
-  // this product we have to get from API body
   const order = new Order(req.body);
+  // here we have to update the stocks
+
+  for (let item of order.items) {
+    let product = await Product.findOne({ _id: item.product.id });
+    product.$inc("stock", -1 * item.quantity);
+    // for optimum performance we should make inventory outside of product.
+    await product.save();
+  }
 
   try {
     const doc = await order.save();
@@ -60,11 +68,9 @@ exports.fetchAllOrders = async (req, res) => {
   // here we need all query string
 
   // sort={_sort:"-price"}
-  // TODO: we have to try with multiple category and brands after change in front-end
   let query = Order.find({ deleted: { $ne: true } });
   let totalOrdersQuery = Order.find({ deleted: { $ne: true } });
 
-  // TODO: How to get sort on discountedPrice not on Actual price
   if (req.query._sort) {
     query = query.sort(req.query._sort);
   }
