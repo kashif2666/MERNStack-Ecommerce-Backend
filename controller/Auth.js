@@ -54,6 +54,15 @@ exports.loginUser = async (req, res) => {
     .json({ id: user.id, role: user.role });
 };
 
+exports.logout = async (req, res) => {
+  res
+    .cookie("jwt", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    })
+    .sendStatus(200);
+};
+
 exports.checkAuth = async (req, res) => {
   if (req.user) {
     res.json(req.user);
@@ -75,7 +84,7 @@ exports.resetPasswordRequest = async (req, res) => {
     const resetPageLink =
       "http://localhost:3000/reset-password?token=" + token + "&email=" + email;
     const subject = "Reset Password for Systummm ";
-    const html = `<p>Click <a href="${resetPageLink}">here</a>to Reset Password</p>`;
+    const html = `<p>Click <a href="${resetPageLink}"> here</a> to Reset Password</p>`;
 
     // lets send email and a token in the mail body so we can verify that the user has clicked right link
 
