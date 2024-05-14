@@ -26,12 +26,6 @@ const path = require("path");
 const { Order } = require("./model/Order");
 const { env } = require("process");
 
-console.log(process.env);
-
-// Email Nodemailer
-
-// async..await is not allowed in global scope, must use a wrapper
-
 // webhook
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 const endpointSecret = process.env.ENDPOINT_SECRET;
@@ -54,19 +48,19 @@ server.post(
     // Handle the event
     switch (event.type) {
       case "payment_intent.succeeded":
-        console.log(event.type);
+        // console.log(event.type);
         const paymentIntentSucceeded = event.data.object;
         const order = await Order.findById(
           paymentIntentSucceeded.metadata.orderId
         );
         order.paymentStatus = "received";
         await order.save();
-        console.log({ paymentIntentSucceeded });
+        // console.log({ paymentIntentSucceeded });
         // Then define and call a function to handle the event payment_intent.succeeded
         break;
       // ... handle other event types
       default:
-        console.log(`Unhandled event type ${event.type}`);
+      // console.log(`Unhandled event type ${event.type}`);
     }
 
     // Return a 200 response to acknowledge receipt of the event
@@ -78,10 +72,10 @@ server.post(
 
 const opts = {};
 opts.jwtFromRequest = cookieExtractor;
-opts.secretOrKey = process.env.JWT_SECRET_KEY; //should not be in code
+opts.secretOrKey = process.env.JWT_SECRET_KEY;
 
 // middlewares
-console.log(path.resolve(__dirname, "build"));
+// console.log(path.resolve(__dirname, "build"));
 server.use(express.static(path.resolve(__dirname, "build")));
 server.use(cookieParser());
 server.use(
@@ -123,7 +117,7 @@ passport.use(
     // by default passport uses usernames
     try {
       const user = await User.findOne({ email: email });
-      console.log(email, password, user);
+      // console.log(email, password, user);
       if (!user) {
         return done(null, false, { message: "Invalid Credentials" });
       }
@@ -154,7 +148,7 @@ passport.use(
 passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
-    console.log({ jwt_payload });
+    // console.log({ jwt_payload });
 
     try {
       const user = await User.findById(jwt_payload.id);
@@ -171,7 +165,7 @@ passport.use(
 
 // this creates session variable req.user on being called from callback
 passport.serializeUser(function (user, cb) {
-  console.log("serialize", user);
+  // console.log("serialize", user);
   process.nextTick(function () {
     return cb(null, { id: user.id, role: user.role });
   });
@@ -180,7 +174,7 @@ passport.serializeUser(function (user, cb) {
 // this changes session variable req.user on being called from authorized request
 
 passport.deserializeUser(function (user, cb) {
-  console.log("de-serialize", user);
+  // console.log("de-serialize", user);
 
   process.nextTick(function () {
     return cb(null, user);

@@ -76,7 +76,7 @@ exports.fetchAllOrders = async (req, res) => {
   }
 
   const totalDocs = await totalOrdersQuery.count().exec();
-  console.log({ totalDocs });
+  // console.log({ totalDocs });
 
   if (req.query._page && req.query._per_page) {
     const pageSize = req.query._per_page;
